@@ -1,5 +1,5 @@
 data("iris")
-
+# ' @export
 Linreg <- setRefClass("Linreg",
                        fields = list(balance = "numeric",
                                      formula = "formula",
@@ -60,44 +60,7 @@ Linreg <- setRefClass("Linreg",
                       )
           )
 
-custom_reg = Linreg(formula = Petal.Length ~ Species, data = iris)
+#custom_reg = Linreg(formula = Petal.Length ~ Species, data = iris)
 
 #custom_reg$fit()
-print(custom_reg)
-
-library(ggplot2)
-
-data("iris")
-
-d1 <- data.frame(x$y_hat, x$e)
-names(d1) <- c("Fitted Values", "Residuals")
-d2 <- data.frame(x$y_hat, sqrt(abs(x$e/sqrt(x$s_hat))))
-names(d2) <- c("Fitted Values", "Standardized Residuals")
-
-iqr <- IQR(d1$Residuals)
-d1$outliers <- ifelse((d1$Residuals > as.numeric(quantile(d1$Residuals)[4] + iqr * 1.5)),
-                      (d1$Residuals < as.numeric(quantile(d1$Residuals)[2] - iqr * 1.5)), 1, 0)
-d2$outliers <- d1$outliers
-
-plot_res <- function(data, title) {
-  p <- ggplot(data = data[data$outliers == 0, ], aes_string(names(data)[1], names(data)[2]), shape = 1, size =3) +
-    geom_point() +
-    stat_summary(
-      data = data[data$outliers == 0, ],
-      fun = mean,
-      aes(group = 1),
-      geom = "line",
-      color = "red"
-    )
-  geom_smooth(data = data[data$outliers == 0, ], method = "loess") +
-    geom_point(data = data[data$outliers == 1, ], shape = 1, size = 3) +
-    geom_text(data = data[data$outliers == 1, ], aes(label = rownames(data[data$outliers == 1,])), hjust = 0.5) +
-    geom_hline(yintercept = 0, linetype = "dotted", color = "red") +
-    ggtitle(title) +
-    theme_bw() +
-    theme(plot.title = element_text(hjust = 0.5, size = 10))
-  return(p)
-}
-
-plot_fun(data = d1, title = "Residuals vs Fitted")
-plot_fun(data = d2, title = "Scale-Location")
+#print(custom_reg)
