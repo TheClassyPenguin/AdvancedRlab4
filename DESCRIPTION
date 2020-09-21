@@ -1,0 +1,17 @@
+Package: AdvancedRlab4
+Type: Package
+Title: Advanced R Programming Lab 3 Assignment 
+Version: 0.1
+Date: 2020-09-21
+Authors@R: c(
+    person("Salvador", "Marti Roman", email = "salvador19marti@gmail.com", role = c("aut", "cre")),
+    person("Eleftheria", "Chatzitheodoridou", email = "e.hatzitheodoridi@gmail.com", role = "aut")) 
+Description: Test package implementing QR Decomposition and Multiple Linear Regression.
+License: GPL-3
+Maintainer: Salvador Marti Roman <salvador19marti@gmail.com>
+RoxygenNote: 7.1.1
+Encoding: UTF-8
+Depends: 
+    R (>= 2.10)
+Suggests: 
+    testthat
