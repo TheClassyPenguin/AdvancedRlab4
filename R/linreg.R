@@ -1,6 +1,6 @@
 data("iris")
 # ' @export
-Linreg <- setRefClass("Linreg",
+linreg <- setRefClass("linreg",
                        fields = list(balance = "numeric",
                                      formula = "formula",
                                      data = "data.frame",
