@@ -4,20 +4,20 @@ linreg <- setRefClass("linreg",
                        fields = list(balance = "numeric",
                                      formula = "formula",
                                      data = "data.frame",
+                                     data_name = "character",
                                      pvalues = "vector",
                                      tvalues = "vector",
                                      coefficients = "matrix",
+                                     coefficients_variance = "matrix",
                                      call_params = "character",
                                      residuals = "matrix",
                                      fitted = "matrix",
-                                     resvar = "vector",
+                                     resvar = "matrix",
                                      outliers = "vector",
                                      degrees_of_freedom = "numeric"
                                      ),
                       
                       methods = list(
-                        test1 = function() print(data),
-                        test2 = function() print("RC test 2"),
                         fit = function(){
                           
                           #Independent variables
@@ -25,31 +25,40 @@ linreg <- setRefClass("linreg",
                           
                           variables = all.vars(formula)
                           #Pick the variable in the other side of the formula
-                          y = data[variables[1:length(variables)-1]]
+                          y = data[all.vars(formula)[1]]
                           
                           X = as.matrix(X)
                           y = as.matrix(y)
                           
                           #Regression coefficients
-                          beta_hat = (solve(t(X) %*% X) %*% t(X) %*% y)
+                          beta_hat = as.matrix(solve(t(X) %*% X) %*% t(X) %*% y)
                           coefficients <<- beta_hat
                           
-                          y_hat = X %*% beta_hat                                #fitted values
+                          #fitted values
+                          y_hat = X %*% beta_hat                                
                           fitted <<- y_hat
                           
-                          e = y - y_hat                                         #residuals
+                          #Residuals
+                          e = y - y_hat                                         
                           residuals <<- e
-
+                          
+                          #Degrees of freedom (observations - parameters)
                           df = nrow(X) - ncol(X)
                           degrees_of_freedom <<- df
                           
-                          s_hat = as.vector((t(e)%*%e)/df)                      #residual variance
+                          #residual variance
+                          s_hat = (t(e)%*%e)/df                      
                           resvar <<- s_hat
                           
-                          var_beta_hat = s_hat * solve(t(X) %*% X)              #variance of regression coefficients
-                          #print(var_beta_hat)
-                          t_val = as.vector(beta_hat) / sqrt(pmax(0,var_beta_hat))                   #t-values
+                          #variance of regression coefficients
+                          var_beta_hat = as.numeric(s_hat) * solve(t(X) %*% X) 
+                          coefficients_variance <<- var_beta_hat
+                          
+                          #T Values
+                          t_val = as.vector(beta_hat) / sqrt(pmax(0,var_beta_hat))
                           tvalues <<- t_val
+                          
+                          #P Values
                           p_val = 2*pt(-abs(t_val), df)
                           pvalues <<- p_val
                           
@@ -91,30 +100,49 @@ linreg <- setRefClass("linreg",
                         resid = function(){return(.self$residuals)},
                         pred = function(){return(.self$fitted)},
                         coef = function(){return(.self$coefficients)},
+                        
                         summary = function(){
+
+                          for(i in 1:length(rownames(.self$coefficients))){
+                            cat(paste(rownames(.self$coefficients)[i],.self$coefficients[i],
+                                      sqrt(diag(.self$coefficients_variance)[i]),
+                                      diag(matrix(.self$tvalues, nrow= sqrt(length(.self$tvalues)), ncol= sqrt(length(.self$tvalues))))[i],
+                                      "***\n"))
+                          }
+                          cat(paste("Residual standard error:",
+                                    sqrt(.self$resvar),
+                                    "on",
+                                    .self$degrees_of_freedom,
+                                    "degrees of freedom"))
+                          },
+                        
+                        summary2 = function(){
                           cat("Coefficients \n")
-                          print(.self$coefficients)
-                          cat("Standard Errors \n")
-                          print("How do I get them?")
+                          print(cbind(coefficients = .self$coefficients, Standard_Errors = diag(.self$coefficients_variance)))
+                          print("T values and P values")
                           print(cbind(T_values=.self$tvalues, P_values=.self$pvalues))
                           cat(" Degrees of Freedom \n")
                           cat(.self$degrees_of_freedom)
                           },
                         
                         initialize = function(formula, data){
+                          stopifnot(inherits(formula,"formula"))
+                          stopifnot(inherits(data,"data.frame"))
                           call_params <<- as.character(sys.calls()[1])  # returns pairlist of all the active calls
                           formula <<- formula
                           data <<- data
+                          data_name <<- deparse(substitute(data))
                           .self$fit()
                           .self$outliers <<- .self$quantile_outlier(.self$residuals)
                         },
                         
-                        show = function(){ 
+                        print = function(){ 
                           cat("Call: \n")
-                          cat(.self$call_params)
-                          cat('\n')
+                          cat(paste("linreg(formula = "), format(.self$formula), ", data = ", .self$data_name, ")\n", sep = "")
                           cat("Coefficients: \n")
-                          print(t(coefficients))
+                          cat(paste(rownames(.self$coefficients),sep = "\t\t\t"))
+                          cat("\n")
+                          cat(paste(round(.self$coefficients,8),sep = "\t\t\t"))
                         }
                       )
           )
@@ -128,3 +156,5 @@ linreg <- setRefClass("linreg",
 
 #d <- iris
 #fit <- Linreg(formula = Petal.Length ~ Species, data = d)
+#linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+#linreg_mod$print()
