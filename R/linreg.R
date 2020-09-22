@@ -18,7 +18,7 @@
 #' The algorithm used for this function can be found on 
 #' \url{https://en.wikipedia.org/wiki/Linear_regression}
 #' 
-#' @field balance matrix. Where is balance bruh.
+#' @field balance matrix. Where is balance.
 #' @field coefficients matrix. Regression Coefficients.
 #' @field fitted matrix. Fitted Values.
 #' @field residuals matrix. Residuals.
