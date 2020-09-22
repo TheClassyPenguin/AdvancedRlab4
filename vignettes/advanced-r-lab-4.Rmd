@@ -1,0 +1,95 @@
+---
+title: "Implementation of Linear Regression in R"
+author: "Eleftheria Chatzitheodoridou, Salvador Marti Roman"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+  toc: true
+vignette: >
+  %\VignetteIndexEntry{Implementation of Linear Regression in R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE
+)
+```
+
+```{r, include = FALSE}
+library(ggplot2)
+library(AdvancedRlab4)
+```
+
+## Introduction
+
+
+This package implements the linear regression model with the use of linear algebra techniques, such as least squares and the QR decomposition. The linear regression model is used to predict the value of a continuous variable y~ based on one or more input predictor variables x. This regression model uses a formula which performs the linear regression functionality (y~x) and a data frame. We shall use the default data set `iris` for the following examples.
+
+
+## Methods
+
+```{r, eval = FALSE}
+linreg_mod = linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+```
+
+### print() 
+
+The function `print()`is a method function that returns the formula along with the coefficients.
+```{r, eval=FALSE}
+linreg_mod$print()
+```
+
+
+### plot() 
+
+The function `plot()` is a method function that returns two plots: p1 is the **Residuals vs. Fitted**, while p3 returns **Scale-Location** (see `linreg.r` file).
+```{r, eval=FALSE}
+linreg_mod$plot()
+```
+
+
+### resid()
+
+The method function `resid()` returns the residuals of the fitted model.
+```{r, eval=FALSE}
+linreg_mod$resid()
+```
+
+
+### pred()
+
+The method function `pred()` returns the predicted values $\hat{y}$ .
+```{r, eval=FALSE}
+linreg_mod$pred()
+```
+
+
+### coeff()
+
+A method function to get the coefficients.
+
+$$\hat{\beta} = (X^TX)^{-1}X^Ty$$
+```{r, eval=FALSE}
+linreg_mod$coeff()
+```
+
+
+### summary()
+
+`summary()` prints the coefficients with the standard error, t-value, p-value and the estimate of $\hat{\sigma}$ along with the degrees of freedom in the model.
+```{r, eval=FALSE}
+linreg_mod$summary()
+```
+
+
+## Reference list
+
+
+1. [Matrix decompositions for regression analysis](https://www.stat.wisc.edu/courses/st849-bates/lectures/Orthogonal.pdf) [2020-09-20]
+
+
+2. [Notes	on	Least	Squares, QR-factorization, SVD](http://staff.www.ltu.se/~jove/courses/c0002m/least_squares.pdf) [2020-09-20]
