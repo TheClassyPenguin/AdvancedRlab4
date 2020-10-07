@@ -22,3 +22,4 @@ Suggests:
     rmarkdown
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
+StagedInstall: no
