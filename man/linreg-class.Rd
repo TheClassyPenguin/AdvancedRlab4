@@ -18,8 +18,6 @@ The algorithm used for this function can be found on
 \section{Fields}{
 
 \describe{
-\item{\code{balance}}{matrix. Where is balance.}
-
 \item{\code{coefficients}}{matrix. Regression Coefficients.}
 
 \item{\code{fitted}}{matrix. Fitted Values.}
