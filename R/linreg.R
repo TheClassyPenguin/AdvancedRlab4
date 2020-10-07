@@ -15,8 +15,7 @@
 #' Test cases call object$print() instead of print(object) so print
 #' function must be redefined in inner scope which makes printing of lists
 #' and dataframes impossible.
-#' 
-#' @field Object to print.
+#' @param x object to print
 #' 
 #' @return Nothing.
 RC_print_workaround = function(x) print(x)

@@ -2,9 +2,12 @@
 % Please edit documentation in R/linreg.R
 \name{RC_print_workaround}
 \alias{RC_print_workaround}
-\title{RC print function redifinition workaround.}
+\title{RC print function redefinition workaround.}
 \usage{
 RC_print_workaround(x)
+}
+\arguments{
+\item{x}{object to print}
 }
 \value{
 Nothing.
@@ -14,9 +17,3 @@ Test cases call object$print() instead of print(object) so print
 function must be redefined in inner scope which makes printing of lists
 and dataframes impossible.
 }
-\section{Fields}{
-
-\describe{
-\item{\code{Object}}{to print.}
-}}
-
