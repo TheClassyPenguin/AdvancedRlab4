@@ -204,7 +204,7 @@ linreg <- setRefClass("linreg",
                           cat("Coefficients:\n")
                           RC_print_workaround(printout)
                           cat("--- \n")
-                          cat("Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 \n\n")
+                          cat("Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 \n\n")
                           cat(paste("Residual standard error:",
                                     sqrt(.self$resvar),
                                     "on",
