@@ -9,7 +9,8 @@
 # package.skeleton(name="lab4")
 # Deadline: 22 September 23:59
 ################################################################################
-#' RC print function redifinition workaround.
+
+#' RC print function redefinition workaround.
 #' 
 #' Test cases call object$print() instead of print(object) so print
 #' function must be redefined in inner scope which makes printing of lists
@@ -233,7 +234,7 @@ linreg <- setRefClass("linreg",
                       )
           )
 
-custom_reg = linreg(formula = Petal.Length ~ Species, data = iris)
+#custom_reg = linreg(formula = Petal.Length ~ Species, data = iris)
 
 #custom_reg$fit()
 #print(custom_reg)
